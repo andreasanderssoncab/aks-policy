@@ -10,7 +10,7 @@ spec:
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
-        package k8poltestcustom
+        package K8singress
 
         violation[{"msg": msg}] {
           obj := input.review.object
@@ -19,5 +19,5 @@ spec:
         }
 
         app_use_private_ip(metadata) {
-          metadata.annotations.appgw\.ingress\.kubernetes\.io\/use-private-ip == "false"
+          metadata.annotations.appgw.ingress.kubernetes.io/use-private-ip == "false"
         }
