@@ -1,0 +1,27 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sazureblockdefaultcustom
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sAzureBlockDefaultCustom
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sazureblockdefaultcustom
+
+        violation[{"msg": msg}] {
+          obj := input.review.object
+          app_use_private_ip(obj.metadata)
+          msg := sprintf("You need to use private ip in your annotation, name: %v, kind: %v", [obj.metadata.name, obj.kind])
+        }
+
+        app_use_private_ip(metadata) {
+          not metadata.annotations.appgw\.ingress\.kubernetes\.io\/use-private-ip
+        }
+
+        app_use_private_ip(metadata) {
+          metadata.annotations.appgw\.ingress\.kubernetes\.io\/use-private-ip == "false"
+        }
