@@ -1,10 +1,10 @@
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8singress
+kind: k8singress
 metadata:
-  name: psp-ingress
+  name: k8singress
 spec:
   match:
     excludedNamespaces: {{ .Values.excludedNamespaces }}
     kinds:
       - apiGroups: [""]
-        kinds: ["ingress"]
+        kinds: ["Ingress"]
